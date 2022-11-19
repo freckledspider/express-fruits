@@ -108,6 +108,10 @@ app.get("/fruits", (req, res) => {
 })
 
 
+app.get("/fruits/new", (req, res) => {
+    res.render("fruits/new.ejs")
+})
+
 // show
 
 app.get("/fruits/:id", (req, res) => {
