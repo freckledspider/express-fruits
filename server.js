@@ -18,6 +18,7 @@ const express = require("express") // bring in express to make our app
 const morgan = require("morgan")
 const methodOverride = require("method-override") // allows us to override post request fromour ejs/forms
 const mongoose = require("mongoose") // gives us that db connection and cool methods for CRUD to the data
+const { emitWarning } = require("process")
 const PORT = process.env.PORT
 const app = express()
 
@@ -107,10 +108,49 @@ app.get("/fruits", (req, res) => {
     .catch(err => console.log(err))
 })
 
+// new route
 
 app.get("/fruits/new", (req, res) => {
     res.render("fruits/new.ejs")
 })
+
+// create route
+
+app.post("/fruits", (req, res) => {
+    // check if the readyToEat property should be true or false
+    req.body.readyToEat = req.body.readyToEat === "on" ? true : false
+    // create the new fruit
+    Fruit.create(req.body, (err, fruit) => {
+        // redirect the user back to the main fruits page after fruit created
+        res.redirect("/fruits")
+    })
+})
+
+
+// edit route
+app.get("/fruits/:id/edit", (req, res) => {
+    // get the id from params
+    const id = req.params.id
+    // get the fruit from the database
+    Fruit.findById(id, (err, fruit) => {
+        // render template and send it fruit
+        res.render("fruits/edit.ejs", {fruit})
+    })
+})
+
+//update route
+app.put("/fruits/:id", (req, res) => {
+    // get the id from params
+    const id = req.params.id
+    // check if the readyToEat property should be true or false
+    req.body.readyToEat = req.body.readyToEat === "on" ? true : false
+    // update the fruit
+    Fruit.findByIdAndUpdate(id, req.body, {new: true}, (err, fruit) => {
+        // redirect user back to main page when fruit 
+        res.redirect("/fruits")
+    })
+})
+
 
 // show
 
@@ -120,6 +160,17 @@ app.get("/fruits/:id", (req, res) => {
     Fruit.findById(req.params.id)
     .then((fruit) => {
         res.render("fruits/show.ejs", {fruit})
+    })
+})
+
+
+app.delete("/fruits/:id", (req, res) => {
+    // get the id from params
+    const id = req.params.id
+    // delete the fruit
+    Fruit.findByIdAndRemove(id, (err, fruit) => {
+        // redirect user back to index page
+        res.redirect("/fruits")
     })
 })
 

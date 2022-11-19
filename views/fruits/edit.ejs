@@ -6,13 +6,14 @@
     <%- include("../partials/header.ejs") %>
     <main>
       <div>
-        <form action="/fruits" method="post">
+        <form action="/fruits/<%= fruit._id %>?_method=PUT" method="post">
           <fieldset>
-              <legend>Create a New Fruit</legend>
+            <legend>Edit a <%= fruit.name %></legend>
             <label>
               NAME:<input
                 type="text"
                 name="name"
+                value="<%= fruit.name %>"
                 placeholder="enter fruit name"
               />
             </label>
@@ -20,14 +21,16 @@
               COLOR:<input
                 type="text"
                 name="color"
-                placeholder="enter fruit color"
+                value="<%= fruit.color %>"
+                placeholder="enter fruit name"
               />
             </label>
             <label>
-              READY TO EAT:<input type="checkbox" name="readyToEat" />
+              READY TO EAT:<input type="checkbox" name="readyToEat" <%=
+              fruit.readyToEat ? "checked" : "" %> />
             </label>
           </fieldset>
-          <input type="submit" value="create new fruit" />
+          <input type="submit" value="Update <%= fruit.name %>" />
         </form>
       </div>
     </main>
