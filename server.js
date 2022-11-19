@@ -101,10 +101,22 @@ app.get("/fruits", (req, res) => {
     // get all the fruits from mongo and send them back
     Fruit.find({})
     .then((fruits) => {
-        res.json(fruits)
+        // res.json(fruits)
+        res.render("fruits/index.ejs", {fruits})
     })
     .catch(err => console.log(err))
 })
 
+
+// show
+
+app.get("/fruits/:id", (req, res) => {
+
+    // go and get the fruit from the database
+    Fruit.findById(req.params.id)
+    .then((fruit) => {
+        res.render("fruits/show.ejs", {fruit})
+    })
+})
 
 app.listen(PORT, () => console.log(`Who let the dogs out on port: ${PORT}`))
