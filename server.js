@@ -23,40 +23,6 @@ const PORT = process.env.PORT
 const app = express()
 
 
-//---------------------------------
-// Database Connections
-//---------------------------------
-
-const DATABASE_URL = process.env.DATABASE_URL
-const CONFIG = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}
-
-// establish connection
-mongoose.connect(DATABASE_URL, CONFIG)
-
-// log connection events from mongoose
-mongoose.connection 
-    .on("open", () => console.log("Mongoose connected"))
-    .on("close", () => console.log("Disconnected from mongoose"))
-    .on("error", () => console.log("Mongoose error", error))
-
-
-//---------------------------------
-// Fruits model
-//---------------------------------
-
-const {Schema, model} = mongoose // destructuring, grabbing model and schem a off mongoose variable
-
-const fruitSchema = new Schema({
-    name: String,
-    color: String,
-    readyToEat: Boolean
-})
-
-const Fruit = model("fruit", fruitSchema)
-
 
 //---------------------------------
 // Middleware
@@ -168,7 +134,7 @@ app.delete("/fruits/:id", (req, res) => {
     // get the id from params
     const id = req.params.id
     // delete the fruit
-    Fruit.findByIdAndRemove(id, (err, fruit) => {
+    Fruit.findByIdAndDelete(req.params.id, (err, fruit) => {
         // redirect user back to index page
         res.redirect("/fruits")
     })
