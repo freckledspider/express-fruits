@@ -1,16 +1,19 @@
-//---------------------------------
-// Fruits model
-//---------------------------------
+//////////////////////////////////////////////
+//////// Fruits Model
+///////////////////////////////////////////////
+const mongoose = require('./connection')
 
-const mongoose = require("./connection")
-const {Schema, model} = mongoose // destructuring, grabbing model and schem a off mongoose variable
+const { Schema, model } = mongoose // destructuring, grabbing model and Schema off mongoose variable
+// mongoose.Schema
+// mongoose.model
 
-const fruitSchema = new Schema({
+
+const fruitsSchema = new  Schema({
     name: String,
     color: String,
     readyToEat: Boolean
 })
 
-const Fruit = model("fruit", fruitSchema)
+const Fruit = model('Fruit', fruitsSchema)
 
 module.exports = Fruit
